@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المساعد الأكاديمي - جامعة بوليتكنك فلسطين</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ppu-green:    #006633;
+    --ppu-green-2:  #00843d;
+    --ppu-gold:     #c8973a;
+    --ppu-gold-lt:  #f0c060;
+    --ppu-dark:     #0a1a10;
+    --ppu-mid:      #14402a;
+    --ppu-surface:  #f4f7f5;
+    --ppu-card:     #ffffff;
+    --ppu-border:   #d0e8d8;
+    --text-main:    #0d2318;
+    --text-sub:     #4a6e58;
+    --text-muted:   #8aaa96;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--ppu-surface);
+    color: var(--text-main);
+    direction: rtl;
+    overflow-x: hidden;
+  }
+
+  /* ── Decorative background pattern ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        60deg,
+        transparent,
+        transparent 60px,
+        rgba(0,102,51,0.03) 60px,
+        rgba(0,102,51,0.03) 61px
+      ),
+      repeating-linear-gradient(
+        -60deg,
+        transparent,
+        transparent 60px,
+        rgba(0,102,51,0.03) 60px,
+        rgba(0,102,51,0.03) 61px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ══ NAV ══ */
+  nav {
+    background: var(--ppu-dark);
+    border-bottom: 3px solid var(--ppu-gold);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: relative;
+    z-index: 10;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+  .nav-logo-circle {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--ppu-gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--ppu-dark);
+    letter-spacing: -1px;
+    flex-shrink: 0;
+  }
+  .nav-title { color: white; font-size: 16px; font-weight: 700; line-height: 1.2; }
+  .nav-title small { display: block; font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.55); }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-link {
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all .2s;
+    border: 1px solid transparent;
+  }
+  .nav-link:hover { color: var(--ppu-gold-lt); border-color: rgba(200,151,58,.3); background: rgba(200,151,58,.08); }
+
+  /* ══ HERO ══ */
+  .hero {
+    position: relative;
+    background: linear-gradient(160deg, var(--ppu-dark) 0%, var(--ppu-mid) 50%, #003d1f 100%);
+    padding: 80px 40px 100px;
+    text-align: center;
+    overflow: hidden;
+    z-index: 1;
+  }
+  /* Radial glow */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 200px;
+    background: radial-gradient(ellipse, rgba(0,132,61,.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  /* Decorative arcs */
+  .hero-arc {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(200,151,58,.15);
+    pointer-events: none;
+  }
+  .hero-arc:nth-child(1) { width: 500px; height: 500px; top: -200px; right: -100px; }
+  .hero-arc:nth-child(2) { width: 300px; height: 300px; bottom: -120px; left: -50px; border-color: rgba(0,132,61,.2); }
+
+  /* University logo in center */
+  .hero-logo-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 28px;
+    animation: logoIn .8s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes logoIn {
+    from { opacity: 0; transform: translateY(-20px) scale(0.85); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .hero-logo-ring {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--ppu-gold);
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(4px);
+    box-shadow:
+      0 0 0 8px rgba(200,151,58,.1),
+      0 0 40px rgba(0,132,61,.3),
+      inset 0 1px 0 rgba(255,255,255,.1);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Shimmer on logo */
+  .hero-logo-ring::before {
+    content: '';
+    position: absolute;
+    inset: 0; border-radius: 50%;
+    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,.12) 50%, transparent 70%);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%,100% { transform: rotate(0deg); }
+    50%      { transform: rotate(180deg); }
+  }
+  .hero-logo-text {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--ppu-gold);
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-logo-text span { display: block; font-size: 11px; color: rgba(255,255,255,.7); font-weight: 500; letter-spacing: 1px; margin-top: 2px; }
+  .hero-badge {
+    margin-top: 10px;
+    background: var(--ppu-gold);
+    color: var(--ppu-dark);
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 3px 14px;
+    border-radius: 20px;
+    letter-spacing: .5px;
+  }
+
+  .hero h1 {
+    color: white;
+    font-size: 34px;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 14px;
+    animation: fadeUp .7s .2s both;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--ppu-gold-lt);
+  }
+  .hero p {
+    color: rgba(255,255,255,.7);
+    font-size: 16px;
+    max-width: 520px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+    animation: fadeUp .7s .35s both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-cta-row {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp .7s .5s both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--ppu-gold), #a87520);
+    color: var(--ppu-dark);
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all .22s;
+    box-shadow: 0 6px 20px rgba(200,151,58,.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(200,151,58,.45); }
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,.85);
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1.5px solid rgba(255,255,255,.25);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all .22s;
+  }
+  .btn-outline:hover { border-color: var(--ppu-gold); color: var(--ppu-gold-lt); background: rgba(200,151,58,.08); }
+
+  /* Stats strip */
+  .stats-strip {
+    background: var(--ppu-green);
+    padding: 18px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    position: relative;
+    z-index: 2;
+  }
+  .stat { text-align: center; color: white; }
+  .stat-num { font-size: 22px; font-weight: 900; color: var(--ppu-gold-lt); display: block; }
+  .stat-label { font-size: 12px; opacity: .75; }
+
+  /* ══ CONTENT ══ */
+  .content { max-width: 920px; margin: 0 auto; padding: 60px 24px 100px; position: relative; z-index: 2; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    color: var(--ppu-green);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 28px; height: 2px;
+    background: var(--ppu-gold);
+    border-radius: 2px;
+  }
+  .section-title {
+    font-size: 26px; font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 32px;
+    line-height: 1.3;
+  }
+
+  /* Cards */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 56px; }
+  .card {
+    background: var(--ppu-card);
+    border-radius: 18px;
+    padding: 26px 22px;
+    border: 1px solid var(--ppu-border);
+    box-shadow: 0 2px 16px rgba(0,80,40,.05);
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 3px;
+    background: linear-gradient(to left, var(--ppu-gold), transparent);
+    border-radius: 0 18px 0 0;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,80,40,.12);
+    border-color: rgba(0,102,51,.3);
+  }
+  .card-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #e8f5ee, #d0eadb);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(0,102,51,.12);
+  }
+  .card-badge {
+    display: inline-block;
+    background: #e8f5ee;
+    color: var(--ppu-green);
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    border: 1px solid rgba(0,102,51,.15);
+  }
+  .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+  .card p  { font-size: 13px; color: var(--text-sub); line-height: 1.65; }
+
+  /* Info section */
+  .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .info-card {
+    background: var(--ppu-card);
+    border-radius: 18px;
+    padding: 28px 24px;
+    border: 1px solid var(--ppu-border);
+    box-shadow: 0 2px 12px rgba(0,80,40,.05);
+  }
+  .info-card h3 {
+    font-size: 16px; font-weight: 800;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .info-list { list-style: none; }
+  .info-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ppu-border);
+    font-size: 13px; color: var(--text-sub);
+    line-height: 1.5;
+  }
+  .info-list li:last-child { border-bottom: none; }
+  .info-list li::before {
+    content: '✓';
+    color: var(--ppu-green);
+    font-weight: 700;
+    font-size: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ══ CHATBOT WIDGET ══ */
+  #ppu-widget-wrap {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    z-index: 9999;
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+  }
+  #ppu-fab {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ppu-green-2), var(--ppu-green));
+    border: 3px solid var(--ppu-gold);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 28px rgba(0,102,51,.45), 0 0 0 0 rgba(0,132,61,.4);
+    transition: transform .25s cubic-bezier(0.34,1.56,0.64,1), box-shadow .2s;
+    position: relative;
+    animation: fabPulse 3s 2s ease-in-out infinite;
+  }
+  @keyframes fabPulse {
+    0%,100% { box-shadow: 0 6px 28px rgba(0,102,51,.45), 0 0 0 0 rgba(0,132,61,.4); }
+    60%      { box-shadow: 0 6px 28px rgba(0,102,51,.45), 0 0 0 14px rgba(0,132,61,.0); }
+  }
+  #ppu-fab:hover { transform: scale(1.1); }
+  #ppu-fab svg { transition: transform .3s, opacity .2s; position: absolute; }
+  #ppu-fab .icon-close { opacity: 0; transform: rotate(-90deg) scale(.6); }
+  #ppu-fab.open .icon-chat  { opacity: 0; transform: rotate(90deg) scale(.6); }
+  #ppu-fab.open .icon-close { opacity: 1; transform: rotate(0deg) scale(1); }
+  #ppu-fab .notif {
+    position: absolute; top: -1px; right: -1px;
+    width: 16px; height: 16px;
+    background: #e53e3e;
+    border: 2px solid white;
+    border-radius: 50%;
+    animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+
+  #ppu-fab-label {
+    position: absolute;
+    left: 74px; bottom: 18px;
+    background: var(--ppu-dark);
+    color: white;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 9px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    border: 1px solid rgba(200,151,58,.3);
+    transform: translateX(-6px);
+    transition: opacity .2s, transform .2s;
+  }
+  #ppu-fab-label::after {
+    content: '';
+    position: absolute;
+    right: -5px; top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-right: none;
+    border-left-color: var(--ppu-dark);
+  }
+  #ppu-widget-wrap:hover #ppu-fab-label { opacity: 1; transform: translateX(0); }
+
+  /* Panel */
+  #ppu-panel {
+    position: absolute;
+    bottom: 78px; left: 0;
+    width: 370px;
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.16), 0 4px 16px rgba(0,102,51,.12);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    opacity: 0;
+    transform: translateY(16px) scale(.95);
+    transform-origin: bottom left;
+    pointer-events: none;
+    transition: opacity .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  #ppu-panel.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+
+  /* Panel header */
+  .w-header {
+    background: linear-gradient(135deg, var(--ppu-green) 0%, var(--ppu-mid) 100%);
+    padding: 16px 18px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 2px solid var(--ppu-gold);
+  }
+  .w-avatar {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.12);
+    border: 1.5px solid rgba(200,151,58,.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--ppu-gold-lt);
+    letter-spacing: 0;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .w-header-info h2 { color: white; font-size: 14px; font-weight: 800; }
+  .w-header-info small { color: rgba(255,255,255,.6); font-size: 11px; }
+  .w-status { display: flex; align-items: center; gap: 5px; color: rgba(255,255,255,.7); font-size: 11px; margin-top: 3px; }
+  .w-dot { width: 6px; height: 6px; background: #68d391; border-radius: 50%; animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .w-minimize {
+    margin-right: auto; background: rgba(255,255,255,.12);
+    border: none; color: white;
+    width: 30px; height: 30px; border-radius: 9px;
+    cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .w-minimize:hover { background: rgba(255,255,255,.22); }
+
+  /* Chatbox */
+  #w-chatbox {
+    height: 310px;
+    padding: 14px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 10px;
+    background: #f5f9f6;
+    scroll-behavior: smooth;
+  }
+  #w-chatbox::-webkit-scrollbar { width: 3px; }
+  #w-chatbox::-webkit-scrollbar-thumb { background: #c6dece; border-radius: 3px; }
+  .w-row { display: flex; align-items: flex-end; gap: 7px; animation: fadeIn .28s ease both; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  .w-row.user { flex-direction: row-reverse; }
+  .w-icon {
+    width: 28px; height: 28px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; flex-shrink: 0;
+  }
+  .w-row.bot  .w-icon { background: #d8ede1; color: var(--ppu-green); }
+  .w-row.user .w-icon { background: var(--ppu-green); color: white; font-size: 12px; }
+  .w-bubble {
+    max-width: 78%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 13px; line-height: 1.65;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .w-row.bot  .w-bubble { background: white; color: var(--text-main); border: 1px solid #ddeae2; border-bottom-right-radius: 4px; }
+  .w-row.user .w-bubble { background: linear-gradient(135deg, var(--ppu-green-2), var(--ppu-green)); color: white; border-bottom-left-radius: 4px; box-shadow: 0 3px 12px rgba(0,102,51,.3); }
+
+  /* Typing */
+  .w-typing { display: flex; gap: 4px; align-items: center; padding: 11px 14px; }
+  .w-typing span { width: 6px; height: 6px; background: #8ab89a; border-radius: 50%; animation: bounce 1.2s infinite; }
+  .w-typing span:nth-child(2){animation-delay:.15s}
+  .w-typing span:nth-child(3){animation-delay:.30s}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+  /* Quick chips */
+  .w-suggestions {
+    padding: 8px 12px 5px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+    background: white;
+    border-top: 1px solid #e4ede7;
+  }
+  .w-chip {
+    background: #eaf4ee;
+    color: var(--ppu-green);
+    border: 1px solid rgba(0,102,51,.2);
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 11.5px;
+    cursor: pointer;
+    transition: all .18s;
+    font-weight: 600;
+  }
+  .w-chip:hover { background: var(--ppu-green); color: white; transform: translateY(-1px); border-color: var(--ppu-green); }
+
+  /* Input */
+  .w-input-area {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    border-top: 1px solid #e4ede7;
+    background: white;
+  }
+  #w-input {
+    flex: 1; padding: 9px 13px;
+    border: 1.5px solid #cce0d4;
+    border-radius: 12px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px; color: var(--text-main);
+    background: #f5f9f6;
+    outline: none; direction: rtl;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  #w-input::placeholder { color: #9ab8a5; }
+  #w-input:focus { border-color: var(--ppu-green); box-shadow: 0 0 0 3px rgba(0,102,51,.1); background: white; }
+  #w-send {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--ppu-green-2), var(--ppu-green));
+    border: none; border-radius: 11px; color: white;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all .2s;
+    box-shadow: 0 3px 10px rgba(0,102,51,.3);
+  }
+  #w-send:hover { transform: scale(1.08); box-shadow: 0 5px 16px rgba(0,102,51,.4); }
+  #w-send:active { transform: scale(.94); }
+  .w-footer {
+    text-align: center; font-size: 10px; color: #9ab8a5;
+    padding: 5px 12px 10px; background: white;
+  }
+  .w-footer a { color: var(--ppu-green); text-decoration: none; }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .cards { grid-template-columns: 1fr; }
+    .info-row { grid-template-columns: 1fr; }
+    nav { padding: 0 20px; }
+    .hero { padding: 60px 20px 80px; }
+    .hero h1 { font-size: 26px; }
+    .stats-strip { gap: 30px; padding: 16px 20px; }
+    #ppu-panel { width: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo-circle">PPU</div>
+    <div class="nav-title">
+      جامعة بوليتكنك فلسطين
+      <small>Palestine Polytechnic University</small>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">الرئيسية</a>
+    <a class="nav-link" href="#">الخدمات</a>
+    <a class="nav-link" href="#">التسجيل</a>
+    <a class="nav-link" href="#">تواصل معنا</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-arc"></div>
+  <div class="hero-arc"></div>
+
+  <!-- University Logo Center -->
+  <div class="hero-logo-wrap">
+    <div class="hero-logo-ring">
+      <div class="hero-logo-text">
+        PPU
+        <span>جامعة بوليتكنك</span>
+      </div>
+    </div>
+    <div class="hero-badge">🎓 الخليل · فلسطين</div>
+  </div>
+
+  <h1>مرحباً بك في <em>المساعد الأكاديمي</em><br>لجامعة بوليتكنك فلسطين</h1>
+  <p>احصل على إجابات فورية لأسئلتك الجامعية — التسجيل، التأجيل، الامتحانات، التخرج، والمزيد. المساعد متاح على مدار الساعة.</p>
+
+  <div class="hero-cta-row">
+    <button class="btn-primary" onclick="openBot()">
+      💬 ابدأ المحادثة الآن
+    </button>
+    <button class="btn-outline">
+      📋 دليل الطالب
+    </button>
+  </div>
+</div>
+
+<!-- Stats strip -->
+<div class="stats-strip">
+  <div class="stat">
+    <span class="stat-num">6+</span>
+    <span class="stat-label">مواضيع يغطيها البوت</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">24/7</span>
+    <span class="stat-label">متاح دائماً</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">Flask</span>
+    <span class="stat-label">مبني بتقنية Python</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">NLP</span>
+    <span class="stat-label">فهم اللغة العربية</span>
+  </div>
+</div>
+
+<!-- ══ CONTENT ══ -->
+<div class="content">
+
+  <!-- Service cards -->
+  <div class="section-label">خدمات المساعد</div>
+  <div class="section-title">ماذا يمكن للمساعد أن يجيب؟</div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <div class="card-badge">تسجيل</div>
+      <h3>السحب والإضافة</h3>
+      <p>تعرّف على مواعيد وإجراءات سحب أو إضافة المواد الدراسية في الفصل الحالي.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📅</div>
+      <div class="card-badge">إجراءات</div>
+      <h3>تأجيل الدراسة</h3>
+      <p>استفسر عن شروط وإجراءات تأجيل الفصل الدراسي والمدة المسموح بها.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📝</div>
+      <div class="card-badge">امتحانات</div>
+      <h3>الامتحانات والعلامات</h3>
+      <p>اسأل عن آلية احتساب العلامات ومراجعة نتائج الامتحانات النهائية.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚠️</div>
+      <div class="card-badge">أكاديمي</div>
+      <h3>التحذير الأكاديمي</h3>
+      <p>اعرف شروط التحذير الأكاديمي وما يجب فعله إذا انخفض معدلك التراكمي.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎓</div>
+      <div class="card-badge">تخرج</div>
+      <h3>شروط التخرج</h3>
+      <p>استفسر عن متطلبات الحصول على درجة البكالوريوس والمعدلات المطلوبة.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌟</div>
+      <div class="card-badge">تميّز</div>
+      <h3>منح التفوق</h3>
+      <p>تعرّف على شروط الحصول على منحة التفوق والإعفاء من الرسوم الدراسية.</p>
+    </div>
+  </div>
+
+  <!-- Info section -->
+  <div class="info-row">
+    <div class="info-card">
+      <h3>🤖 كيف يعمل البوت؟</h3>
+      <ul class="info-list">
+        <li>يستقبل سؤالك باللغة العربية الطبيعية</li>
+        <li>يحلل النص باستخدام تعابير Regex الذكية</li>
+        <li>يطابق السؤال مع قاعدة بيانات الإجابات</li>
+        <li>يرد فوراً بمعلومة دقيقة من اللوائح الجامعية</li>
+        <li>مبني على Flask ويعمل كـ API محلي أو سحابي</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>📖 أسئلة يمكنك تجربتها</h3>
+      <ul class="info-list">
+        <li>كيف أؤجل دراستي هذا الفصل؟</li>
+        <li>ما شروط الحصول على منحة التفوق؟</li>
+        <li>متى يُوجَّه التحذير الأكاديمي للطالب؟</li>
+        <li>ما الذي يلزم للتخرج بدرجة البكالوريوس؟</li>
+        <li>كيف أسحب مادة بعد الأسبوع الأول؟</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     CHATBOT WIDGET — Flask connected
+     endpoint: POST /ask
+     ══════════════════════════════════ -->
+<div id="ppu-widget-wrap">
+  <div id="ppu-fab-label">المساعد الأكاديمي 🎓</div>
+
+  <div id="ppu-panel">
+    <div class="w-header">
+      <div class="w-avatar">PPU<br>BOT</div>
+      <div class="w-header-info">
+        <h2>المساعد الأكاديمي</h2>
+        <small>جامعة بوليتكنك فلسطين</small>
+        <div class="w-status"><span class="w-dot"></span> متاح الآن</div>
+      </div>
+      <button class="w-minimize" onclick="toggleWidget()" title="تصغير">✕</button>
+    </div>
+
+    <div id="w-chatbox"></div>
+
+    <div class="w-suggestions">
+      <button class="w-chip" onclick="wQuick('كيف أؤجل دراستي؟')">📅 تأجيل</button>
+      <button class="w-chip" onclick="wQuick('ما شروط التخرج؟')">🎓 تخرج</button>
+      <button class="w-chip" onclick="wQuick('سحب مادة')">📚 سحب</button>
+      <button class="w-chip" onclick="wQuick('منحة التفوق')">🌟 تفوق</button>
+    </div>
+
+    <div class="w-input-area">
+      <button id="w-send" onclick="wSend()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+      <input id="w-input" placeholder="اكتب سؤالك الجامعي هنا…" autocomplete="off">
+    </div>
+    <div class="w-footer">
+      بيانات اللائحة الجامعية · <a href="#">جامعة بوليتكنك فلسطين</a>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <button id="ppu-fab" onclick="toggleWidget()">
+    <div class="notif" id="w-notif"></div>
+    <svg class="icon-chat" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  let widgetOpen = false;
+
+  function toggleWidget() {
+    widgetOpen = !widgetOpen;
+    document.getElementById('ppu-panel').classList.toggle('open', widgetOpen);
+    document.getElementById('ppu-fab').classList.toggle('open', widgetOpen);
+    const notif = document.getElementById('w-notif');
+    if (widgetOpen && notif) notif.remove();
+  }
+
+  function openBot() {
+    if (!widgetOpen) toggleWidget();
+  }
+
+  function wAddMsg(text, type) {
+    const box = document.getElementById('w-chatbox');
+    const row = document.createElement('div');
+    row.classList.add('w-row', type);
+    const icon = document.createElement('div');
+    icon.classList.add('w-icon');
+    icon.textContent = type === 'user' ? '👤' : 'PPU';
+    const bubble = document.createElement('div');
+    bubble.classList.add('w-bubble');
+    bubble.textContent = text;
+    row.appendChild(icon);
+    row.appendChild(bubble);
+    box.appendChild(row);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function wShowTyping() {
+    const box = document.getElementById('w-chatbox');
+    const row = document.createElement('div');
+    row.classList.add('w-row', 'bot');
+    row.id = 'w-typing';
+    const icon = document.createElement('div');
+    icon.classList.add('w-icon');
+    icon.textContent = 'PPU';
+    const bubble = document.createElement('div');
+    bubble.classList.add('w-bubble');
+    bubble.style.padding = '0';
+    bubble.innerHTML = '<div class="w-typing"><span></span><span></span><span></span></div>';
+    row.appendChild(icon);
+    row.appendChild(bubble);
+    box.appendChild(row);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function wHideTyping() {
+    const el = document.getElementById('w-typing');
+    if (el) el.remove();
+  }
+
+  async function wSend() {
+    const input = document.getElementById('w-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    wAddMsg(msg, 'user');
+    input.value = '';
+    document.getElementById('w-send').disabled = true;
+    wShowTyping();
+    try {
+      const res = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'message=' + encodeURIComponent(msg)
+      });
+      const data = await res.json();
+      await new Promise(r => setTimeout(r, 600));
+      wHideTyping();
+      wAddMsg(data.response, 'bot');
+    } catch {
+      wHideTyping();
+      wAddMsg('حدث خطأ في الاتصال. تأكد من تشغيل خادم Flask.', 'bot');
+    }
+    document.getElementById('w-send').disabled = false;
+  }
+
+  function wQuick(text) {
+    if (!widgetOpen) toggleWidget();
+    document.getElementById('w-input').value = text;
+    wSend();
+  }
+
+  document.getElementById('w-input').addEventListener('keypress', e => {
+    if (e.key === 'Enter') wSend();
+  });
+
+  // Welcome message
+  setTimeout(() => {
+    wAddMsg('أهلاً وسهلاً! 🎓 أنا المساعد الأكاديمي لجامعة بوليتكنك فلسطين.\nيمكنني الإجابة على أسئلتك حول التسجيل، التأجيل، الامتحانات، التخرج والمزيد. كيف يمكنني مساعدتك؟', 'bot');
+  }, 900);
+</script>
+<!-- ══ END WIDGET ══ -->
+
+</body>
+</html>
